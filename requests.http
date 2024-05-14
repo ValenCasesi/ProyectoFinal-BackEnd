@@ -1,0 +1,220 @@
+###Estas request pueden no funcionar. Fueron realizadas a medida que se iba concretando el proyecto
+
+
+###ObraSocial
+POST http://localhost:3000/ObraSocial
+Content-Type: application/json
+
+{"nombre": "Osde"
+}
+
+###
+GET http://localhost:3000/ObraSocial/ HTTP/1.1
+
+###
+DELETE http://localhost:3000/ObraSocial/62db147cf2ebd3bf2140334d HTTP/1.1
+
+###
+PUT http://localhost:3000/ObraSocial/62db147cf2ebd3bf2140334d HTTP/1.1
+Content-Type: application/json
+
+{"nombre": "Osde"
+}
+
+###Paciente
+POST http://localhost:3000/Paciente
+Content-Type: application/json
+
+{
+  "dni": "42564323",
+  "nombre": "Santiago",
+  "apellido": "Tombolini",
+  "telefono": "3415346678",
+  "mail": "santiagotombo@gmail.com",
+  "password": "1234",
+  "direccion": "Lejos lejos",
+  "fecha_nac": "10/08/2000"
+}
+
+###
+POST http://localhost:3000/Paciente/login
+Content-Type: application/json
+
+{
+
+"mail": "nachogiggiaro2000@gmail.com",
+"password": "12345678"
+
+}
+
+
+
+###
+GET http://localhost:3000/Paciente/62ddcbcf5470143287a95ad2 HTTP/1.1
+
+###
+GET http://localhost:3000/Paciente/ HTTP/1.1
+
+###
+DELETE http://localhost:3000/Paciente/62ddcbcf5470143287a95ad2 HTTP/1.1
+
+###
+PUT http://localhost:3000/Paciente/62db0b38e6119b7cb7a3a33d HTTP/1.1
+Content-Type: application/json
+
+{"nombre": "Pedro"
+}
+
+###Professional
+
+POST http://localhost:3000/Professional HTTP/1.1
+Content-Type: application/json
+
+{
+  "dni": "18527022",
+  "nombre": "Alfredo",
+  "apellido": "Tombolini",
+  "telefono": "1111111111",
+  "mail": "a.tombolini@example.com",
+  "direccion": "Calle falsa 123",
+  "fecha_nac": "1964-01-19T03:00:00.000Z",
+  "schedules": [
+    "631ca5d12cdd1cba2151f1ac"
+  ],
+  "obrasSociales": [
+    "62dc6b30294deeae93787cef",
+    "631a358a642b6367578986a1"
+  ],
+  "practicas": [
+    "62f6cd459671f1694b1feb71",
+    "6321e11c74714c24886aaffb",
+    "6323b4e39692099aad721dcf"
+  ]
+}
+###
+GET http://localhost:3000/Professional/62f6cce99671f1694b1feb6e/r HTTP/1.1
+Content-Type: application/json
+
+{"date": "09/12/22"
+}
+
+###
+GET http://localhost:3000/Professional/p HTTP/1.1
+###
+GET http://localhost:3000/Professional/62f6cce99671f1694b1feb6e HTTP/1.1
+
+###
+GET http://localhost:3000/Professional HTTP/1.1
+
+###
+
+GET http://localhost:3000/Professional/Schedule/62f6cce99671f1694b1feb6e HTTP/1.1
+
+###
+DELETE http://localhost:3000/Professional/62ddd35a51e7167ee3eb0215 HTTP/1.1
+
+###
+PUT http://localhost:3000/Professional/62ddd35a51e7167ee3eb0215 HTTP/1.1
+Content-Type: application/json
+
+{"nombre": "Mago"
+}
+
+###
+POST http://localhost:3000/ProfessionalAddSchedule/62f6cce99671f1694b1feb6e HTTP/1.1
+Content-Type: application/json
+
+{
+"schedulesId": "631e1f5f5b87440733e787ac"
+}
+
+###
+
+DELETE http://localhost:3000/ProfessionalDeleteSchedule/62ddd265e9d72b8e4c2e69ea HTTP/1.1
+Content-Type: application/json
+
+{
+  "schedulesId": "62ddead21b94961800ae4f1d"
+}
+
+###Schedule
+
+POST http://localhost:3000/Schedule HTTP/1.1
+Content-Type: application/json
+
+{
+  "dia": "Tuesday",
+  "hsDesde": "15",
+  "hsHasta": "18"
+}
+
+###
+GET http://localhost:3000/Schedule/62df2c19a5affd3a5d814661 HTTP/1.1
+
+###
+GET http://localhost:3000/Schedule HTTP/1.1
+
+###
+DELETE http://localhost:3000/Schedule/62f6cab1917eb5c7d892fb00 HTTP/1.1
+
+###
+PUT http://localhost:3000/Schedule/62df2c19a5affd3a5d814661 HTTP/1.1
+Content-Type: application/json
+
+{"hsDesde": "2022-07-24T13:30:00.000+00:00"
+}
+
+###Turno
+
+POST http://localhost:3000/Turno HTTP/1.1
+Content-Type: application/json
+
+{
+  "dia": "09-12-2022",
+  "paciente": "62ab0c9641bdffb779861d5b",
+  "obraSocial": "62dc6b30294deeae93787cef",
+  "professional": "62f6cce99671f1694b1feb6e",
+  "practica": "62f6cd459671f1694b1feb71",
+  "hsDesde": "14.5"
+}
+
+###
+GET http://localhost:3000/Turno HTTP/1.1
+
+###
+GET http://localhost:3000/Turno/62df283590591dc90b586dd9 HTTP/1.1
+
+###
+DELETE http://localhost:3000/Turno/62f900de396c7ef99ed6b367 HTTP/1.1
+
+###
+PUT http://localhost:3000/Turno/62df283590591dc90b586dd9 HTTP/1.1
+Content-Type: application/json
+
+{"practica": "62df291090591dc90b586de0"
+}
+
+###Practica
+
+POST http://localhost:3000/Practica HTTP/1.1
+Content-Type: application/json
+
+{
+  "nombre": "Cirugia ocular"
+}
+
+###
+GET http://localhost:3000/Practica HTTP/1.1
+
+###
+GET http://localhost:3000/Practica/62df281490591dc90b586dd7 HTTP/1.1
+
+###
+DELETE http://localhost:3000/Practica/62df233ea1bbfaf6e6b04c89 HTTP/1.1
+
+###
+PUT http://localhost:3000/Practica/62df281490591dc90b586dd7 HTTP/1.1
+Content-Type: application/json
+
+{"nombre": "Examen Proctologico"
+}
