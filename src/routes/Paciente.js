@@ -8,5 +8,5 @@ router.post('/', controller.createPaciente);
 router.post('/login', controller.logIn);
 router.delete('/:id/', controller.deletePaciente);
 router.put('/:id/', controller.updatePaciente);
-
+router.get('/email/prueba', controller.sendEmail);
 module.exports = router;

@@ -2,7 +2,7 @@ const Paciente = require('../models/Paciente');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Console = require("console");
-
+const nodemailer = require('nodemailer');
 
 const pacienteController = {
 
@@ -136,7 +136,33 @@ const pacienteController = {
             return res.status(500).send({message: 'Error updating Paciente'});
         }
     },
+    sendEmail: async (req, res) => {
+        try {
+            const config = {
+                host: 'smtp.gmail.com',
+                port : 587,
+                auth: {
+                    user: 'vdevv2024@gmail.com',
+                    pass: 'wonu zjzo aotb jmzn'
+                }
+            }
 
+            const mnsj = {
+                from: 'vdevv2024@gmail.com',
+                to: 'juanmartincresta.2001@gmail.com',
+                subject: 'Clinica Odontolica',
+                text:'Buenas tardes Juan Martin! Le recordamos que tiene una deuda a saldar equvialente a $350700 del arreglo, esperamos su respuesta!'
+            }
+
+            const transport = nodemailer.createTransport(config);
+            const info = await transport.sendMail(mnsj);
+            console.log(info)
+            return res.send({message: "Email enviado correctamente"});
+        } catch(error) {
+            console.log(error)
+            return res.status(500).send({message: 'Error sendig Email'});
+        }
+    },
 
 }
 
