@@ -143,13 +143,13 @@ const pacienteController = {
                 port : 587,
                 auth: {
                     user: 'vdevv2024@gmail.com',
-                    pass: 'wonu zjzo aotb jmzn'
+                    pass: process.env.PWEMAIL
                 }
             }
 
             const mnsj = {
                 from: 'vdevv2024@gmail.com',
-                to: 'juanmartincresta.2001@gmail.com',
+                to: 'vdevv2024@gmail.com',
                 subject: 'Clinica Odontolica',
                 text:'Buenas tardes Juan Martin! Le recordamos que tiene una deuda a saldar equvialente a $350700 del arreglo, esperamos su respuesta!'
             }
