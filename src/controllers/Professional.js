@@ -107,6 +107,7 @@ const professionalController = {
         }
         return res.send({message: 'Professional updated successfully'});
     },
+    
 
     removeSchedule: async (req, res) => {
         const professionalId = req.params.id;
