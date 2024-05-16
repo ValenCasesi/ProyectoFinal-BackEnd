@@ -26,12 +26,12 @@ POST http://localhost:3000/Paciente
 Content-Type: application/json
 
 {
-  "dni": "42564323",
+  "dni": "111111",
   "nombre": "Santiago",
   "apellido": "Tombolini",
-  "telefono": "3415346678",
-  "mail": "santiagotombo@gmail.com",
-  "password": "1234",
+  "telefono": "2222",
+  "mail": "vdevv2024@gmail.com",
+  "password": "123",
   "direccion": "Lejos lejos",
   "fecha_nac": "10/08/2000"
 }
@@ -48,7 +48,7 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:3000/Paciente/email/prueba HTTP/1.1
+GET http://localhost:3000/Paciente/email/6643c117809a64432f6a83db HTTP/1.1
 
 ###
 GET http://localhost:3000/Paciente/62ddcbcf5470143287a95ad2 HTTP/1.1

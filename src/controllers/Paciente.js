@@ -53,7 +53,7 @@ const pacienteController = {
     },
     createPaciente: async (req, res) => {
         try {
-            bcrypt.hash(req.body.password, 10, (err, hash) => {
+            bcrypt.hash(req.body.password, 10, async (err, hash) => {
                 if (err) {
                     return res.status(500).json({
                         error: err
@@ -71,13 +71,16 @@ const pacienteController = {
                         master: "0"
                     });
 
-                    newPaciente.save((err, savedPaciente) => {
+                    newPaciente.save(async (err, savedPaciente) => {
                         if (err) {
                             return res.status(500).json({
                                 error: err
                             });
                         }
-                        return res.status(200).json(savedPaciente);
+
+                        await pacienteController.sendEmail(req, res, savedPaciente);
+                        //return res.status(200).json(savedPaciente);
+                        
                     });
                 }
             });
@@ -136,8 +139,11 @@ const pacienteController = {
             return res.status(500).send({message: 'Error updating Paciente'});
         }
     },
-    sendEmail: async (req, res) => {
+    sendEmail: async (req, res,paciente) => {
         try {
+            if (!paciente) {
+                return res.status(404).send({ message: 'Paciente not found' });
+            }
             const config = {
                 host: 'smtp.gmail.com',
                 port : 587,
@@ -146,12 +152,69 @@ const pacienteController = {
                     pass: process.env.PWEMAIL
                 }
             }
+            //const paciente = await Paciente.findById(req.params.id).exec();  
 
+            const contentHTML = `
+            <!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>Bienvenido a nuestra clínica odontológica</title>
+                        <style>
+                            /* Estilos CSS aquí */
+                            body {
+                                font-family: Arial, sans-serif;
+                                background-color: #f3f3f3;
+                                padding: 20px;
+                            }
+                            .container {
+                                max-width: 600px;
+                                margin: 0 auto;
+                                background-color: #ffffff;
+                                padding: 20px;
+                                border-radius: 10px;
+                                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+                            }
+                            h1 {
+                                color: #333333;
+                            }
+                            p {
+                                color: #666666;
+                            }
+                            .button {
+                                display: inline-block;
+                                background-color: #4CAF50;
+                                border: none;
+                                color: white;
+                                padding: 10px 20px;
+                                text-align: center;
+                                text-decoration: none;
+                                display: inline-block;
+                                font-size: 16px;
+                                margin: 4px 2px;
+                                cursor: pointer;
+                                border-radius: 5px;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="container">
+                            <h1>Bienvenido ${paciente.nombre} ${paciente.apellido} !</h1>
+                            <p>Te damos la bienvenida a nuestra clínica odontológica. Estamos encantados de tenerte como paciente.</p>
+                            <p>En nuestra clínica, nos comprometemos a proporcionarte la mejor atención y cuidado dental. Si tienes alguna pregunta o necesitas ayuda, no dudes en contactarnos.</p>
+                            <p>¡Esperamos verte pronto en nuestra clínica!</p>
+                            <a href="https://www.ejemplodelpagina.com/contacto" class="button">Contactar</a>
+                        </div>
+                    </body>
+                    </html>
+                        `;
+            
             const mnsj = {
                 from: 'vdevv2024@gmail.com',
-                to: 'vdevv2024@gmail.com',
+                to: paciente.mail,
                 subject: 'Clinica Odontolica',
-                text:'Buenas tardes Juan Martin! Le recordamos que tiene una deuda a saldar equvialente a $350700 del arreglo, esperamos su respuesta!'
+                html: contentHTML
             }
 
             const transport = nodemailer.createTransport(config);
