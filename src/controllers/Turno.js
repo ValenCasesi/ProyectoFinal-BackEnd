@@ -81,7 +81,7 @@ const turnoController = {
             console.log(`hsDesde: ${JSON.stringify(turnos[0].hsDesde)}`);
             return (turnos);
         } catch (err) {
-            return res.status(503).send({message: 'Error retrieving turnos by professional and date'})
+            //return res.status(503).send({message: 'Error retrieving turnos by professional and date'})
         }
     },
 
