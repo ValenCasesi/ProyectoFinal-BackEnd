@@ -123,11 +123,11 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:3000/Professional/6646977a2636b77c82827a34/Schedule HTTP/1.1
+POST http://localhost:3000/Professional/65f0eea559f713b5d8584b1c/Schedule HTTP/1.1
 Content-Type: application/json
 
 {
-"scheduleId": "664692a5d80203b97c4aec4b"
+"scheduleId": "664690bfd80203b97c4aec3a"
 }
 
 ###
