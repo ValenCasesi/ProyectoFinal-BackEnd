@@ -184,7 +184,7 @@ Content-Type: application/json
 GET http://localhost:3000/Turno HTTP/1.1
 
 ###
-GET http://localhost:3000/Turno/62df283590591dc90b586dd9 HTTP/1.1
+GET http://localhost:3000/Turno/65f0eea559f713b5d8584b1c HTTP/1.1
 
 ###
 DELETE http://localhost:3000/Turno/62f900de396c7ef99ed6b367 HTTP/1.1

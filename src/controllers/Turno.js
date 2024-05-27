@@ -90,9 +90,18 @@ const turnoController = {
             //return res.status(503).send({message: 'Error retrieving turnos by professional and date'})
         }
     },
+    getTurnosByProfessional: async (req, res) => {
+        try {
+            const professionalId = req.params.id;
+            const turnos = await Turno.find({ professional: professionalId }).exec();
+            if (!turnos.length) return res.status(404).send({ message: `No hay turnos para el profesional con ID: ${professionalId}` });
+            return res.status(200).json(turnos);
+        } catch (err) {
+            return res.status(503).send({ success: false, message: 'Error al buscar turnos por profesional' });
+        }
+    },
     sendEmailTurno: async (req, res,turno) => {
         try {
-            console.log('ENTREEEEEEE');
             if (!turno) {
                 return res.status(404).send({ message: 'Turno not found' });
             }
@@ -112,7 +121,6 @@ const turnoController = {
             if (!paciente || !profesional) {
                 return res.status(404).send({ message: 'Paciente or Profesional not found' });
             }
-                //const paciente = await Paciente.findById(req.params.id).exec();  
 
             const contentHTML = `
             <!DOCTYPE html>

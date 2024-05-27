@@ -4,7 +4,8 @@ const controller = require('../controllers/Turno')
 const router = express.Router();
 
 router.get('/', controller.getTurno);
-router.get('/:id/', controller.getTurnoByID);
+router.get('/:id/', controller.getTurnosByProfessional);
+//router.get('/:id/', controller.getTurnoByID);
 router.post('/', controller.createTurno);
 router.delete('/:id/', controller.deleteTurno);
 router.put('/:id/', controller.updateTurno);
