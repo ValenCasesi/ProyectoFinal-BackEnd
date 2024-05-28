@@ -149,7 +149,7 @@ const pacienteController = {
                 port : 587,
                 auth: {
                     user: 'vdevv2024@gmail.com',
-                    pass: process.env.PWEMAIL
+                    pass: process.env.EMAIL_KEY
                 }
             }
             //const paciente = await Paciente.findById(req.params.id).exec();  
