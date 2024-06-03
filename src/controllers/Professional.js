@@ -222,6 +222,9 @@ const professionalController = {
             const dateString = moment(date).format('dddd');
             const schedule = await Professional.findOne({_id: professionalId}).populate('schedules', 'dia');
             const sche = await Schedule.findOne({_id: schedule.schedules, dia: dateString, state: true});
+            if (!sche) {
+                return res.status(404).send({message: 'El profesional no cuenta con turnos para este día'});
+            }
             var cont = sche.hsDesde;
             let turns = [];
             while (cont <= (sche.hsHasta - 0.25)) {
