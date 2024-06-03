@@ -36,6 +36,15 @@ const professionalController = {
 
     createProfessional: async (req, res) => {
         try {
+            // Buscar si ya existe un profesional con el mismo DNI
+            const existingProfessional = await Professional.findOne({ dni: req.body.dni }).exec();
+            
+            // Si ya existe, devolver un mensaje de error
+            if (existingProfessional) {
+                return res.status(400).send({ message: 'Profesional ya existente' });
+            }
+            
+            // Si no existe, crear un nuevo profesional
             const newProfessional = new Professional({
                 dni: req.body.dni,
                 nombre: req.body.nombre,
@@ -48,12 +57,17 @@ const professionalController = {
                 obrasSociales: req.body.obrasSociales,
                 practicas: req.body.practicas
             });
+    
+            // Guardar el nuevo profesional en la base de datos
             await newProfessional.save();
-            return res.status(200).send({success: true, newProfessional});
-        } catch {
-            return res.status(500).send({message: 'Error creating a Professional'})
+    
+            // Devolver una respuesta exitosa
+            return res.status(200).send({ success: true, newProfessional });
+        } catch (err) {
+            // En caso de error, devolver un mensaje de error
+            return res.status(500).send({ message: 'Error creating a Professional', error: err });
         }
-    },
+    },    
 
     deleteProfessional: async (req, res) => {
         try {
@@ -222,9 +236,6 @@ const professionalController = {
             const dateString = moment(date).format('dddd');
             const schedule = await Professional.findOne({_id: professionalId}).populate('schedules', 'dia');
             const sche = await Schedule.findOne({_id: schedule.schedules, dia: dateString, state: true});
-            if (!sche) {
-                return res.status(404).send({message: 'El profesional no cuenta con turnos para este día'});
-            }
             var cont = sche.hsDesde;
             let turns = [];
             while (cont <= (sche.hsHasta - 0.25)) {
