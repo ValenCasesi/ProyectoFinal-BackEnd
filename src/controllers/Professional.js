@@ -5,6 +5,7 @@ const {Turno} = require("../models");
 const {Schedule} = require("../models");
 const moment = require("moment");
 const Turn = require("../models/Turn")
+const validator = require('validator');
 
 const professionalController = {
     getProfessional: async (req, res) => {
@@ -36,6 +37,12 @@ const professionalController = {
 
     createProfessional: async (req, res) => {
         try {
+            // Verificar si el mail es válido
+            if (!validator.isEmail(req.body.mail)) {
+                return res.status(400).json({
+                    message: 'Correo electrónico no válido'
+                });
+            }
             // Buscar si ya existe un profesional con el mismo DNI
             const existingProfessional = await Professional.findOne({ dni: req.body.dni }).exec();
             

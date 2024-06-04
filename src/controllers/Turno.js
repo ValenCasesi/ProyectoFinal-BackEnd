@@ -24,9 +24,20 @@ const turnoController = {
 
         }
     },
-
     createTurno: async (req, res) => {
         try {
+            // Extraer datos del cuerpo de la solicitud
+            const { dia, paciente } = req.body;
+
+            // Contar el número de turnos para el paciente en el día dado
+            const existingTurnosCount = await Turno.countDocuments({ dia, paciente });
+           
+
+            // Verificar si el conteo es 2 o más
+            if (existingTurnosCount >= 2) {
+                return res.status(400).send({ message: 'El paciente no puede tener más de 2 turnos en el mismo día' });
+            }
+
             const newTurno = new Turno({
                 dia: req.body.dia,
                 paciente: req.body.paciente,
@@ -37,16 +48,12 @@ const turnoController = {
             });
 
             await newTurno.save();
-            console.log(`objeto añadido: ${JSON.stringify(newTurno)}`);
-
             await turnoController.sendEmailTurno(req, res, newTurno);
-
             //return res.status(200).send({success: true, newTurno});
         } catch (err) {
             return res.status(503).send({message: err})
-        }
-    },
-
+        }
+    },
     deleteTurno: async (req, res) => {
         try {
             const removedTurno = await Turno.findByIdAndRemove(req.params.id).exec();

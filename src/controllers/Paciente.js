@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Console = require("console");
 const nodemailer = require('nodemailer');
+const validator = require('validator');
 
 const pacienteController = {
 
@@ -53,21 +54,49 @@ const pacienteController = {
     },
     createPaciente: async (req, res) => {
         try {
-            bcrypt.hash(req.body.password, 10, async (err, hash) => {
+            const { dni, mail, nombre, apellido, telefono, password, direccion, fecha_nac } = req.body;
+
+             // Validar el correo electrónico usando validator
+            if (!validator.isEmail(mail)) {
+                return res.status(400).json({
+                    message: 'Correo electrónico no es válido'
+                });
+            }
+
+            // Verificar si la contraseña cumple con los criterios
+            // Aquí puedes personalizar las reglas de validación de la contraseña según tus necesidades
+            const passwordIsValid = validator.isLength(password, { min: 8 }) && 
+                                    validator.isAlphanumeric(password) && 
+                                    validator.matches(password, /\d/); // al menos un dígito
+            if (!passwordIsValid) {
+                return res.status(400).json({
+                    message: 'La contraseña debe tener al menos 8 caracteres y contener solo letras y números, incluyendo al menos un dígito'
+                });
+            }
+
+            // Verificar si el paciente ya existe por dni o mail
+            const existingPaciente = await Paciente.findOne({ $or: [{ dni }, { mail }] });
+            if (existingPaciente) {
+                return res.status(400).json({
+                    message: 'El paciente ya está registrado con el mismo DNI o correo electrónico'
+                });
+            }
+
+            bcrypt.hash(password, 10, async (err, hash) => {
                 if (err) {
                     return res.status(500).json({
                         error: err
                     });
                 } else {
                     const newPaciente = new Paciente({
-                        dni: req.body.dni,
-                        nombre: req.body.nombre,
-                        apellido: req.body.apellido,
-                        telefono: req.body.telefono,
-                        mail: req.body.mail,
+                        dni,
+                        nombre,
+                        apellido,
+                        telefono,
+                        mail,
                         password: hash,
-                        direccion: req.body.direccion,
-                        fecha_nac: req.body.fecha_nac,
+                        direccion,
+                        fecha_nac,
                         master: "0"
                     });
 
@@ -86,8 +115,8 @@ const pacienteController = {
             });
         } catch (error) {
             return res.status(500).send({success: false, message: 'Error creating Paciente'});
-        }
-    },
+        }
+    },
     getPacientes: async (req, res) => {
         try {
             const pacientes = await Paciente.find({}).exec();
