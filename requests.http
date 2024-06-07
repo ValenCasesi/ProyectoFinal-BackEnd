@@ -181,7 +181,7 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:3000/Turno HTTP/1.1
+GET http://localhost:3000/Turno/paciente/66468c20d80203b97c4aebdb HTTP/1.1
 
 ###
 GET http://localhost:3000/Turno/65f0eea559f713b5d8584b1c HTTP/1.1

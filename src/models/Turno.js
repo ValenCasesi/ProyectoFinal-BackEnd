@@ -9,6 +9,9 @@ const TurnoSchema = new Schema({
     professional: {type: mongoose.SchemaTypes.ObjectId, ref: 'Professional', required: true},
     practica: {type: mongoose.SchemaTypes.ObjectId, ref: 'Practica', required: true},
     hsDesde: {type: Number, required: true},
+    costo: {type: Number, required: false},
+    pagado: {type: Boolean, required: false},
+    observacion: {type: String, required: false},
 });
 
 module.exports = mongoose.model('Turno', TurnoSchema);

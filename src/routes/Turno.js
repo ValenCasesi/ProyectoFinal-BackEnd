@@ -5,6 +5,7 @@ const router = express.Router();
 
 router.get('/', controller.getTurno);
 router.get('/:id/', controller.getTurnosByProfessional);
+router.get('/paciente/:id/', controller.getTurnosByPaciente);
 //router.get('/:id/', controller.getTurnoByID);
 router.post('/', controller.createTurno);
 router.delete('/:id/', controller.deleteTurno);

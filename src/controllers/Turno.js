@@ -100,11 +100,26 @@ const turnoController = {
     getTurnosByProfessional: async (req, res) => {
         try {
             const professionalId = req.params.id;
-            const turnos = await Turno.find({ professional: professionalId }).exec();
-            if (!turnos.length) return res.status(404).send({ message: `No hay turnos para el profesional con ID: ${professionalId}` });
+            const turnos = await Turno.find({ professional: professionalId })
+                .sort({ dia: -1 }) // Ordenar por fecha (campo 'dia') en orden descendente
+                .exec();
+            if (!turnos.length) {
+                return res.status(404).send({ message: `No hay turnos para el profesional con ID: ${professionalId}` });
+            }
             return res.status(200).json(turnos);
         } catch (err) {
             return res.status(503).send({ success: false, message: 'Error al buscar turnos por profesional' });
+        }
+    },
+    
+    getTurnosByPaciente: async (req, res) => {
+        try {
+            const pacienteId = req.params.id;
+            const turnos = await Turno.find({ paciente: pacienteId }).exec();
+            if (!turnos.length) return res.status(404).send({ message: `No hay turnos para el paciente con ID: ${pacienteId}` });
+            return res.status(200).json(turnos);
+        } catch (err) {
+            return res.status(503).send({ success: false, message: 'Error al buscar turnos por paciente' });
         }
     },
     sendEmailTurno: async (req, res,turno) => {
