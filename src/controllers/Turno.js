@@ -64,23 +64,29 @@ const turnoController = {
         }
     },
 
-    updateTurno: async (req, res) => {
+    updateTurno : async (req, res) => {
         try {
             const updatedTurno = await Turno.findByIdAndUpdate(
-                req.params.id, {
-                    dia: req.body.dia,
-                    paciente: req.body.paciente,
-                    obraSocial: req.body.obraSocial,
-                    professional: req.body.professional,
-                    practica: req.body.practica,
-                    hsDesde: req.body.hsDesde,
-                    hsHasta: Number(req.body.hsDesde) + 0.25
+                req.params.id,
+                {
+                    costo: req.body.costo,
+                    pagado: req.body.pagado,
+                    observacion: req.body.observacion
                 },
+                {
+                    new: true, // Devuelve el documento actualizado
+                    runValidators: true // Ejecuta las validaciones del schema
+                }
             ).exec();
-            if (!updatedTurno) return res.status(404).send({message: `There is no Turno with Id: ${req.params.id} `});
-            return res.send({message: "Turno updated successfully"});
-        } catch {
-            return res.status(503).send({message: 'error updating Turno'})
+    
+            if (!updatedTurno) {
+                return res.status(404).send({ message: `There is no Turno with Id: ${req.params.id}` });
+            }
+    
+            return res.send({ message: "Turno updated successfully", turno: updatedTurno });
+        } catch (error) {
+            console.error('Error updating Turno:', error.message);
+            return res.status(503).send({ message: 'Error updating Turno' });
         }
     },
 
