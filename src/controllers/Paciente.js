@@ -13,13 +13,13 @@ const pacienteController = {
             .then(paciente => {
                 if (paciente.length < 1) {
                     return res.status(401).json({
-                        message: 'Auth failed <1'
+                        message: 'Mail no registrado!'
                     });
                 }
                 bcrypt.compare(req.body.password, paciente[0].password, (err, resp) => {
                     if (err || !resp) {
                         return res.status(401).json({
-                            message: 'Auth failed password'
+                            message: 'Contraseña incorrecta!'
                         });
                     }
 
