@@ -279,7 +279,7 @@ const professionalController = {
             return res.status(200).json(turns);
         } catch (error) {
             console.error(error);
-            return res.status(500).send({message: 'Error searching Turnos'});
+            return res.status(500).send({message: 'No hay turnos para ese profesional ese día'});
         }
     },
     retrieveOS: async (req, res) => {

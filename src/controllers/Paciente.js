@@ -27,6 +27,7 @@ const pacienteController = {
                     const token = jwt.sign({
                             mail: paciente[0].mail,
                             userId: paciente[0]._id,
+                            nombre: paciente[0].nombre,
                             master: paciente[0].master,
                         },
                         process.env.JWT_KEY,
@@ -39,6 +40,7 @@ const pacienteController = {
                         message: 'Auth succesful',
                         master: paciente[0].master,
                         userId: paciente[0]._id,
+                        nombre: paciente[0].nombre,
                         token: token
                     });
 

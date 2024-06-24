@@ -8,7 +8,7 @@ const obraSocialController = {
                 imgURL: req.body.imgURL
             });
             await newObraSocial.save();
-            return res.status(200).send({success: true, newObraSocial});
+            return res.status(200).send({success: true, newObraSocial, message:'Obra Social creada con exito!'});
         } catch (error) {
             return res
                 .status(500)
@@ -43,7 +43,7 @@ const obraSocialController = {
 
             if (!removedObraSocial) return res.status(404).send({message: `There is no Obra Social with ID: ${req.params.id}`});
 
-            return res.send({message: "Obra Social deleted successfully"});
+            return res.send({message: "Obra Social elminada correctamente!"});
         } catch {
             return res.status(500).send({message: 'Error deleting Obra Social'});
         }
