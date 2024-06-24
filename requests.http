@@ -73,7 +73,7 @@ POST http://localhost:3000/Professional HTTP/1.1
 Content-Type: application/json
 
 {
-  "dni": "4545454",
+  "dni": "ssssss",
   "nombre": "Alfredo",
   "apellido": "Tombolini",
   "telefono": "1111111111",

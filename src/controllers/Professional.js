@@ -43,6 +43,15 @@ const professionalController = {
                     message: 'Correo electrónico no válido'
                 });
             }
+
+             // Verificar si el DNI es válido
+            const dniRegex = /^\d{7,8}$/; // Ejemplo de regex para DNI de 7 u 8 dígitos
+            if (!dniRegex.test(req.body.dni)) {
+                return res.status(400).json({
+                    message: 'DNI no válido. Debe ser un número de 7 u 8 dígitos.'
+                });
+            }
+
             // Buscar si ya existe un profesional con el mismo DNI
             const existingProfessional = await Professional.findOne({ dni: req.body.dni }).exec();
             
