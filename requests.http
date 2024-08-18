@@ -101,6 +101,10 @@ Content-Type: application/json
 }
 
 ###
+GET http://localhost:3000/Professional/65f0eea559f713b5d8584b1c/DiasAtencion HTTP/1.1
+Content-Type: application/json
+
+###
 GET http://localhost:3000/Professional/p HTTP/1.1
 ###
 GET http://localhost:3000/Professional/62f6cce99671f1694b1feb6e HTTP/1.1

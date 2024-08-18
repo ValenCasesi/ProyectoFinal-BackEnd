@@ -2,6 +2,8 @@ const Turno = require('../models/Turno');
 const Professional = require('../models/Professional');
 const Paciente = require('../models/Paciente');
 const nodemailer = require('nodemailer');
+const moment = require("moment");
+
 const turnoController = {
 
     getTurno: async (req, res) => {
@@ -128,28 +130,30 @@ const turnoController = {
             return res.status(503).send({ success: false, message: 'Error al buscar turnos por paciente' });
         }
     },
-    sendEmailTurno: async (req, res,turno) => {
+    sendEmailTurno: async (req, res, turno) => {
         try {
             if (!turno) {
                 return res.status(404).send({ message: 'Turno not found' });
             }
             const config = {
                 host: 'smtp.gmail.com',
-                port : 587,
+                port: 587,
                 auth: {
                     user: 'vdevv2024@gmail.com',
                     pass: process.env.EMAIL_KEY
                 }
-            }
-            console.log(turno.paciente);
-            console.log(turno.professional);
+            };
+    
             const paciente = await Paciente.findById(turno.paciente).exec();
             const profesional = await Professional.findById(turno.professional).exec();
-
+            
+            const fecha = moment(turno.dia);
+            const turnoFecha = fecha.format('DD/MM/YYYY');
+            
             if (!paciente || !profesional) {
                 return res.status(404).send({ message: 'Paciente or Profesional not found' });
             }
-
+    
             const contentHTML = `
             <!DOCTYPE html>
             <html lang="en">
@@ -158,7 +162,6 @@ const turnoController = {
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>Confirmación de Turno - Clínica Odontológica</title>
                 <style>
-                    /* Estilos CSS aquí */
                     body {
                         font-family: Arial, sans-serif;
                         background-color: #f3f3f3;
@@ -198,7 +201,7 @@ const turnoController = {
                     <h1>Turno Registrado Correctamente, ${paciente.nombre} ${paciente.apellido}!</h1>
                     <p>Nos complace informarte que tu turno ha sido registrado con éxito.</p>
                     <p><strong>Profesional:</strong> ${profesional.nombre} ${profesional.apellido}</p>
-                    <p><strong>Fecha y Hora:</strong> ${turno.dia} a las ${turno.hsDesde}hs</p>
+                    <p><strong>Fecha y Hora:</strong> ${turnoFecha} a las ${turno.hsDesde}hs</p>
                     <p>Si tienes alguna pregunta o necesitas modificar tu turno, no dudes en contactarnos.</p>
                     <p>¡Esperamos verte pronto en nuestra clínica!</p>
                     <a href="https://www.ejemplodelpagina.com/contacto" class="button">Contactar</a>
@@ -206,21 +209,21 @@ const turnoController = {
             </body>
             </html>
             `;
-            
+    
             const mnsj = {
                 from: 'vdevv2024@gmail.com',
                 to: paciente.mail,
-                subject: 'Clinica Odontolica',
+                subject: 'Clinica Odontologica',
                 html: contentHTML
-            }
-
+            };
+    
             const transport = nodemailer.createTransport(config);
             const info = await transport.sendMail(mnsj);
-            console.log(info)
-            return res.send({message: "Email enviado correctamente"});
-        } catch(error) {
-            console.log(error)
-            return res.status(500).send({message: 'Error sendig Email'});
+            console.log(info);
+            return res.send({ message: "Email enviado correctamente" });
+        } catch (error) {
+            console.log(error);
+            return res.status(500).send({ message: 'Error envio de Email' });
         }
     },
 

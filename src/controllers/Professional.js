@@ -315,6 +315,31 @@ const professionalController = {
         } catch (error) {
             return res.status(500).send({message: 'Error retrieving OS', error: error.message});
         }
+    },
+    getDiasAtencionProfesional: async (req, res) => {
+        try {
+            const { id } = req.params;  // ID del profesional recibido en la URL
+    
+            // Buscar el profesional por ID y popular los horarios (schedules)
+            const professional = await Professional.findById(id).populate('schedules');
+    
+            if (!professional) {
+                return res.status(404).json({ message: 'Profesional no encontrado' });
+            }
+    
+            // Extraer los días en los que atiende el profesional
+            const diasAtencion = professional.schedules
+                .filter(schedule => schedule.state)  // Solo horarios con estado activo
+                .map(schedule => schedule.dia);      // Obtener solo los días
+    
+            // Devolver los días únicos (sin repetidos) en los que atiende el profesional
+            const diasUnicos = [...new Set(diasAtencion)];
+    
+            return res.status(200).json({ diasAtencion: diasUnicos });
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ message: 'Error al obtener los días de atención del profesional' });
+        }
     }
 }
 

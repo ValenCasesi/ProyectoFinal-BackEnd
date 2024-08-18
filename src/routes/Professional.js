@@ -5,6 +5,7 @@ const router = express.Router();
 
 router.get('/', controller.getProfessional);
 router.get('/:id/', controller.getProfessionalByID);
+router.get('/:id/DiasAtencion', controller.getDiasAtencionProfesional);
 
 router.get("/:id/OS", controller.retrieveOS);
 router.post('/:id/OS/:idOS', controller.addOS);
